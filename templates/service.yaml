@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "vernemq.fullname" . }}
+  labels:
+    app: {{ template "vernemq.name" . }}
+    chart: {{ template "vernemq.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: mqtt
+    - port: {{ .Values.service.portSsl }}
+      targetPort: http
+      protocol: TCP
+      name: mqttssl  
+  selector:
+    app: {{ template "vernemq.name" . }}
+    release: {{ .Release.Name }}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: vernemq
+  namespace: vernemq
+  labels:
+    app: vernemq
+spec:
+  ports:
+    - port: 1883
+      name: mqtt
+    - port: 8883
+      name: mqttssl
+  clusterIP: None
+  selector:
+    app: vernemq
