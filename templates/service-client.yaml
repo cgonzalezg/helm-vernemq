@@ -11,30 +11,21 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: mqtt
       protocol: TCP
       name: mqtt
     - port: {{ .Values.service.portSsl }}
-      targetPort: http
+      targetPort: mqttssl
       protocol: TCP
       name: mqttssl  
+    - port: 8888
+      targetPort: status
+      protocol: TCP
+      name: status
+    - port: 44053
+      name: epmd
+      targetPort: epmd
+      protocol: TCP 
   selector:
     app: {{ template "vernemq.name" . }}
     release: {{ .Release.Name }}
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: vernemq
-  namespace: vernemq
-  labels:
-    app: vernemq
-spec:
-  ports:
-    - port: 1883
-      name: mqtt
-    - port: 8883
-      name: mqttssl
-  clusterIP: None
-  selector:
-    app: vernemq

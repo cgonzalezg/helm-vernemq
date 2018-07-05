@@ -1,18 +1,18 @@
-# Default values for vernemq.
+# Default values for test.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 3
+replicaCount: 1
 
 image:
-  repository: erlio/docker-vernemq
-  tag: latest
+  repository: nginx
+  tag: stable
   pullPolicy: IfNotPresent
 
 service:
   type: ClusterIP
-  port: 1883
-  portSsl: 8883
+  port: 80
+
 ingress:
   enabled: false
   annotations: {}
